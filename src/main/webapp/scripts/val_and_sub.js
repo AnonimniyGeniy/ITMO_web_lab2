@@ -16,7 +16,7 @@ function validateAndSubmit() {
         if (validate()) {
             $.ajax({
                 type: "GET",
-                url: "php/script.php",
+                url: "/controller",
                 data: {
                     "x": x,
                     "y": y,
@@ -31,23 +31,25 @@ function validateAndSubmit() {
         alert("Http error" + error);
     }
 }
+function drawTableRow(x, y, r, result, time, currentTime) {
+    let table = $("#result_table");
+    let row = $("<tr></tr>");
+    row.append($("<td></td>").text(x));
+    row.append($("<td></td>").text(y));
+    row.append($("<td></td>").text(r));
+    row.append($("<td></td>").text(result));
+    row.append($("<td></td>").text(currentTime));
+    table.append(row);
+}
 
 function onResponse(response) {
     let parsedResponse = JSON.parse(response);
     parsedResponse.forEach(element => {
         results.push(element);
     });
-    let table = "<table class='result-table'><tr><th>X</th><th>Y</th><th>R</th><th>Результат</th><th>Время работы скрипта</th><th>Время</th></tr>";
     results.forEach(element => {
-        //table += "<tr><td>";
-        for (let j = 0; j < element.length; j++) {
-            table += "<td>" + element[j] + "</td>";
-        }
-        table += "</tr>";
-    })
-    table += "</table>";
-    //document.getElementById("result-table").innerHTML = "hi";
-    document.getElementById("result_table").innerHTML = table;
+        drawTableRow(element[0], element[1], element[2], element[3], element[4], element[5]);
+    });
 
 }
 
@@ -124,4 +126,25 @@ function validateR() {
 
 function validate() {
     return validateX() && validateY() && validateR();
+}
+
+
+function SubmitOnClick(x, y){
+    validateR();
+    let time = new Date().getTimezoneOffset();
+    $.ajax({
+        type: "GET",
+        url: "/controller",
+        data: {
+            "x": x,
+            "y": y,
+            "r": r,
+            "time": time
+        },
+        success: function (responseText) {
+            drawPoint(x, y, r, responseText === "true");
+            drawTableRow(x, y, r, responseText === "true", time, new Date().getTimezoneOffset());
+        },
+        dataType: "text"
+    })
 }

@@ -10,11 +10,21 @@ body {
 }
 
 .image_block {
-    display: inline-flex;
+    /*display: inline-flex;*/
     margin-left: 5%;
     margin-bottom: 1%;
     align-content: stretch;
 }
+
+
+#graph{
+    position: absolute;
+    margin-left: 5%;
+    margin-bottom: 1%;
+    width: 211px;
+    height: 211px;
+}
+
 
 
 .form_block{
@@ -129,3 +139,5 @@ input[type="checkbox"]:not(:checked) + label:after {
 .point.hit {
     background-color: #358d2d;
 }
+
+
