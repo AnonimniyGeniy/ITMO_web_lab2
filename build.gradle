@@ -22,6 +22,14 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'com.google.code.gson:gson-parent:2.10.1'
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'com.google.code.gson:gson:2.10.1'
+  implementation 'com.google.code.gson:gson:2.10.1'
   compileOnly('jakarta.validation:jakarta.validation-api:3.0.2')
   compileOnly('jakarta.ejb:jakarta.ejb-api:4.0.1')
   compileOnly('jakarta.json.bind:jakarta.json.bind-api:3.0.0')

@@ -28,7 +28,7 @@
 
 <div id="graph">
 </div>
-<img src="static/areas.png" alt="area">
+<img src="static/areas.png" alt="area" class = "image_block">
 
 </div>
 <div class="form_block">
@@ -114,7 +114,7 @@
                 <td>${pointData.x}</td>
                 <td>${pointData.y}</td>
                 <td>${pointData.r}</td>
-                <td>${pointData.result ? "Hit / Success" : "Miss / Fail"}</td>
+                <td>${pointData.result ? "Hit" : "Miss"}</td>
                 <td>${pointData.executionTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))}</td>
                 <td>${pointData.duration}ns</td>
             </tr>

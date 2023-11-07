@@ -58,6 +58,17 @@ public class PointData implements Serializable {
                 '}';
     }
 
+    public String toJSonString() {
+        return "{" +
+                "\"x\":" + x +
+                ", \"y\":" + y +
+                ", \"r\":" + r +
+                ", \"result\":" + result +
+                ", \"executionTime\":" + '"' +  executionTime + '"' +
+                ", \"duration\":" + duration +
+                '}';
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;

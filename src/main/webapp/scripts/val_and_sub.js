@@ -16,12 +16,11 @@ function validateAndSubmit() {
         if (validate()) {
             $.ajax({
                 type: "GET",
-                url: "/controller",
+                url: "/lab2_web-1.0-SNAPSHOT/controller",
                 data: {
                     "x": x,
                     "y": y,
                     "r": r,
-                    "time": new Date().getTimezoneOffset()
                 },
                 success: onResponse,
                 dataType: "text"
@@ -31,6 +30,7 @@ function validateAndSubmit() {
         alert("Http error" + error);
     }
 }
+
 function drawTableRow(x, y, r, result, time, currentTime) {
     let table = $("#result_table");
     let row = $("<tr></tr>");
@@ -48,6 +48,7 @@ function onResponse(response) {
         results.push(element);
     });
     results.forEach(element => {
+        drawPoint(element[0], element[1], element[2], element[3])
         drawTableRow(element[0], element[1], element[2], element[3], element[4], element[5]);
     });
 
@@ -129,22 +130,36 @@ function validate() {
 }
 
 
-function SubmitOnClick(x, y){
+function SubmitOnClick(x, y) {
     validateR();
     let time = new Date().getTimezoneOffset();
-    $.ajax({
-        type: "GET",
-        url: "/controller",
-        data: {
-            "x": x,
-            "y": y,
-            "r": r,
-            "time": time
-        },
-        success: function (responseText) {
-            drawPoint(x, y, r, responseText === "true");
-            drawTableRow(x, y, r, responseText === "true", time, new Date().getTimezoneOffset());
-        },
-        dataType: "text"
+    //foreach r send ajax request
+    r.forEach(element => {
+        $.ajax({
+            type: "GET",
+            url: "/lab2_web-1.0-SNAPSHOT/controller",
+            data: {
+                "x": x * element,
+                "y": y * element,
+                "r": element,
+            },
+            success: function (response) {
+                console.log(response.toString());
+                let parsedResponse = JSON.parse(response);
+                console.log(parsedResponse.x);
+                console.log(parsedResponse.y);
+                console.log(parsedResponse.r);
+                console.log(parsedResponse.result);
+                console.log(parsedResponse.executionTime);
+                console.log(parsedResponse.duration);
+                drawPoint(parsedResponse.x, parsedResponse.y, parsedResponse.r, parsedResponse.result);
+                drawTableRow(parsedResponse.x, parsedResponse.y, parsedResponse.r, parsedResponse.result, parsedResponse.executionTime, parsedResponse.duration / 1);
+
+
+                //drawPoint(x * element, y * element, element, responseText === "true");
+                //drawTableRow(x * element, y * element, element, responseText === "true", time, new Date().getTimezoneOffset());
+            },
+            dataType: "text"
+        })
     })
 }

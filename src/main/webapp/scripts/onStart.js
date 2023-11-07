@@ -3,9 +3,8 @@ $(document).ready(function () {
         let x = event.offsetX;
         let y = event.offsetY;
 
-        let r = document.getElementById("r").value;
-        let xval = (x - 105) / 80 * r;
-        let yval = (105 - y) / 80 * r;
+        let xval = (x - 105) / 80;
+        let yval = (105 - y) / 80;
         console.log(xval + " " + yval);
         SubmitOnClick(xval, yval);
     });

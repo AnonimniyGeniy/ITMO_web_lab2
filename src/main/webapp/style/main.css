@@ -126,18 +126,18 @@ input[type="checkbox"]:not(:checked) + label:after {
 
 .point {
     position: absolute;
-    background-color: #000000;
+    background-color: #ffffff;
     width: 10px;
     height: 10px;
     border-radius: 20px;
 }
 
 .point.miss {
-    background-color: rgb(212, 0, 0);
+    background-color: #ec0808;
 }
 
 .point.hit {
-    background-color: #358d2d;
+    background-color: #1dd90a;
 }
 
 
