@@ -14,17 +14,7 @@ function getMarkedBoxes() {
 function validateAndSubmit() {
     try {
         if (validate()) {
-            $.ajax({
-                type: "GET",
-                url: "/lab2_web-1.0-SNAPSHOT/controller",
-                data: {
-                    "x": x,
-                    "y": y,
-                    "r": r,
-                },
-                success: onResponse,
-                dataType: "text"
-            })
+            SubmitOnButton(x, y);
         }
     } catch (error) {
         alert("Http error" + error);
@@ -56,20 +46,24 @@ function onResponse(response) {
 
 
 function validateX() {
-    let xOptions = document.getElementById('x');
-    let selectedOption = null;
-    for (var i = 0; i < xOptions.length; i++) {
-        if (xOptions[i].checked) {
-            selectedOption = xOptions[i].value;
-            x = parseInt(xOptions[i].value);
-            return true;
-        }
-    }
-    if (selectedOption === null) {
-        alert("No value in select chosen.");
+    const radioButtons = document.querySelectorAll('input[name="x"]');
+
+    radioButtons.forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            if (radio.checked) {
+                const selectedValue = radio.value;
+                x = parseInt(selectedValue);
+                console.log('Selected value: ' + x  );
+                return true;
+            }
+        });
+    });
+    if (isNaN(x)){
+        alert("No x value selected");
         return false;
     }
     return true;
+
 }
 
 function validateY() {
@@ -82,7 +76,7 @@ function validateY() {
         //console.log(Math.fround(rawY * 100000000)/100000000);
         let value_y = parseFloat(rawY);
 
-        if (value_y > ymin && value_y < ymax) {
+        if (value_y >= ymin && value_y <= ymax) {
             y = value_y;
             return true;
         } else {
@@ -143,6 +137,9 @@ function SubmitOnClick(x, y) {
                 "y": y * element,
                 "r": element,
             },
+            error: function (response, error) {
+                alert("incorrect values");
+            },
             success: function (response) {
                 console.log(response.toString());
                 let parsedResponse = JSON.parse(response);
@@ -154,12 +151,53 @@ function SubmitOnClick(x, y) {
                 console.log(parsedResponse.duration);
                 drawPoint(parsedResponse.x, parsedResponse.y, parsedResponse.r, parsedResponse.result);
                 drawTableRow(parsedResponse.x, parsedResponse.y, parsedResponse.r, parsedResponse.result, parsedResponse.executionTime, parsedResponse.duration / 1);
-
-
                 //drawPoint(x * element, y * element, element, responseText === "true");
                 //drawTableRow(x * element, y * element, element, responseText === "true", time, new Date().getTimezoneOffset());
             },
+
             dataType: "text"
-        })
+
+        }
+        )
+    })
+}
+
+
+
+function SubmitOnButton(x, y) {
+    validateR();
+    let time = new Date().getTimezoneOffset();
+    //foreach r send ajax request
+    r.forEach(element => {
+        $.ajax({
+                type: "GET",
+                url: "/lab2_web-1.0-SNAPSHOT/controller",
+                data: {
+                    "x": x,
+                    "y": y,
+                    "r": element,
+                },
+                error: function (response, error) {
+                    alert("incorrect values");
+                },
+                success: function (response) {
+                    console.log(response.toString());
+                    let parsedResponse = JSON.parse(response);
+                    console.log(parsedResponse.x);
+                    console.log(parsedResponse.y);
+                    console.log(parsedResponse.r);
+                    console.log(parsedResponse.result);
+                    console.log(parsedResponse.executionTime);
+                    console.log(parsedResponse.duration);
+                    drawPoint(parsedResponse.x, parsedResponse.y, parsedResponse.r, parsedResponse.result);
+                    drawTableRow(parsedResponse.x, parsedResponse.y, parsedResponse.r, parsedResponse.result, parsedResponse.executionTime, parsedResponse.duration / 1);
+                    //drawPoint(x * element, y * element, element, responseText === "true");
+                    //drawTableRow(x * element, y * element, element, responseText === "true", time, new Date().getTimezoneOffset());
+                },
+
+                dataType: "text"
+
+            }
+        )
     })
 }

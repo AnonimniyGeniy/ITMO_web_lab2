@@ -8,6 +8,7 @@ $(document).ready(function () {
         console.log(xval + " " + yval);
         SubmitOnClick(xval, yval);
     });
+    validateX();
 });
 
 
